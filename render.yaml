@@ -21,7 +21,6 @@ services:
   - type: web
     name: mine-safety-frontend
     env: static
-    region: oregon
     plan: free
     buildCommand: cd mine-safety-frontend && npm install && npm run build
     staticPublishPath: mine-safety-frontend/dist
