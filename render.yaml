@@ -1,0 +1,39 @@
+services:
+  # Backend API
+  - type: web
+    name: mine-safety-backend
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: pip install -r mine-safety-backend/requirements.txt
+    startCommand: cd mine-safety-backend && uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: mine-safety-db
+          property: connectionString
+      - key: PYTHON_VERSION
+        value: 3.11.0
+    
+  # Frontend Static Site
+  - type: web
+    name: mine-safety-frontend
+    env: static
+    region: oregon
+    plan: free
+    buildCommand: cd mine-safety-frontend && npm install && npm run build
+    staticPublishPath: mine-safety-frontend/dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+databases:
+  # PostgreSQL Database
+  - name: mine-safety-db
+    databaseName: mine_safety_db
+    user: mine_safety_user
+    plan: free
+    region: oregon
