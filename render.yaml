@@ -21,7 +21,7 @@ services:
   - type: web
     name: mine-safety-frontend
     env: static
-    buildCommand: cd mine-safety-frontend && npm install && npm run build
+    buildCommand: cd mine-safety-frontend && rm -rf node_modules package-lock.json && npm install && npm run build
     staticPublishPath: mine-safety-frontend/dist
     routes:
       - type: rewrite
